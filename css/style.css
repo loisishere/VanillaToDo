@@ -1,0 +1,38 @@
+html, body{
+	margin: 0 auto;
+}
+ul{
+	list-style:none;
+	position: relative;
+	height: auto;
+    width: 25%;
+    margin: 0 auto;
+
+}
+li > div > span{
+	text-align: left;
+	position:absolute;
+	width:auto;
+	height: auto;
+	z-index: 2;
+	float:left;
+	display: inline;
+	background-color: white;
+}
+li > div > input[type='text']{
+	z-index: 1;
+	border: none;
+	float: left;
+	border-bottom: black 1px solid;
+	position: absolute;
+	background-color: white;
+	width: auto;
+	display: inline;
+	visibility: hidden;
+}
+li > div > input[type='text']:focus{
+	border: none;
+}
+li > div > button{
+	float:right;
+}

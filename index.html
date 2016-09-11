@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>VanillaJS To Dos App</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css"/>
+</head>
+<body>
+<input type="text" id="inputToDoText" placeholder="Type your to do" />
+<div>
+<button onclick="e.addToDo()">Add</button>
+<button onclick="e.toggleAll()">All Completed</button>
+</div>
+<div>
+	<button onclick="view.displayToDo()">Change</button>
+	<button onclick="e.toggleCompleted()">Delete Completed</button>
+</div>
+<ul class="todos">
+<li></li>
+
+</ul>
+<script type="text/javascript" src="js/script.js"></script>
+</body>
+</html>
