@@ -61,7 +61,7 @@ var e ={
 		for(var i=0;i<todo.toDoList.length;i++){
 			var newToDo = document.createElement("li");
 			newToDo.className ="item";
-			newToDo.innerHTML=  "<div><input type='radio'/><span onclick = 'e.changeToDo("+ i +")'>" 
+			newToDo.innerHTML=  "<div><input type='checkbox'/><span onclick = 'e.changeToDo("+ i +")'>" 
 				+ todo.toDoList[i].toDoText + "</span><input id ='inputToDoText' type='text' onkeypress='e.changeMade("+i+",event)'></input>"
 				 +"<button onclick='e.deleteToDo("+i+")'>Delete</button></div>";
 			newToDo.id = i;
@@ -131,7 +131,7 @@ var e ={
 	},
 	toggleAll:function(){
 		todo.toggleAll();
-		var completedToDo = document.querySelectorAll("input[type='radio']");
+		var completedToDo = document.querySelectorAll("input[type='checkbox']");
 		var totalToDos = document.querySelectorAll("li");
 		var completed =0;
 		for (var i = 0; i< totalToDos.length; i++) {
@@ -153,12 +153,14 @@ var e ={
 	deleteToDo:function(position){
 		var element = document.getElementById(position.toString());
 		element.parentNode.removeChild(element);
+		todo.deleteToDo(position);
 	},
 	toggleCompleted:function(){
-		var completedToDo = document.querySelectorAll("input[type='radio']");
+		var completedToDo = document.querySelectorAll("input[type='checkbox']");
 		var totalToDos = document.querySelectorAll("li");
 		for(var i=0;i<completedToDo.length;i++){
 			if(completedToDo[i].checked){
+				todo.toDoList[i].completed = completedToDo[i].checked;
 				var element = document.getElementById(i.toString());
 			element.parentNode.removeChild(element);
 			todo.deleteToDo(i);
