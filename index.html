@@ -5,13 +5,12 @@
 	<link rel="stylesheet" type="text/css" href="css/style.css"/>
 </head>
 <body>
-<input type="text" id="inputToDoText" placeholder="Type your to do" />
+<input type="text" id="addToDoText" placeholder="Type your to do" onkeypress="e.addInputText(event)"/>
 <div>
 <button onclick="e.addToDo()">Add</button>
 <button onclick="e.toggleAll()">All Completed</button>
 </div>
 <div>
-	<button onclick="view.displayToDo()">Change</button>
 	<button onclick="e.toggleCompleted()">Delete Completed</button>
 </div>
 <ul class="todos">

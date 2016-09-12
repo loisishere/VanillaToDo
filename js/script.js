@@ -52,7 +52,6 @@ var todo = {
 	}
 
 };
-
 //create a handler object to hold all the button events!
 var e ={
 	displayToDo:function(){
@@ -71,7 +70,7 @@ var e ={
 	
 	},
 	addToDo:function(){
-		var todo_text = document.getElementById("inputToDoText");
+		var todo_text = document.getElementById("addToDoText");
 		
 		if(todo_text.value){
 		todo.addToDo(todo_text.value);
@@ -167,5 +166,11 @@ var e ={
 			
 			}
 		}
+	},
+	addInputText:function(event){
+	if(event.keyCode === 13){
+		this.addToDo();
 	}
 }
+}
+;
