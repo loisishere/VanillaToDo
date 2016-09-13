@@ -1,36 +1,18 @@
-var todo = {
+(function(window){
+window.todo = {
 	toDoList:[],
 	addToDo:function(toDoText){
 		this.toDoList.push({completed:false, toDoText:toDoText});
-		this.displayToDo();
-	},
-	displayToDo:function(){
-		
-		if(this.toDoList.length === 0){
-				console.log("You have no to dos")
-				}else{
-					console.log("To Do:");
-					for(var i=0; i< this.toDoList.length;i++){
-					if(this.toDoList[i].completed){
-						console.log("(X)", this.toDoList[i].toDoText);
-					}else{
-						console.log("( )", this.toDoList[i].toDoText);
-					}
-				}
-			}
 	},
 	changeToDo:function(position,toDoText){
 		this.toDoList[position].toDoText = toDoText;
-		this.displayToDo();
 	},
 	deleteToDo:function(position){
 		this.toDoList.splice(position,1);
-		this.displayToDo();
 	},
 	toggleCompleted:function(position){
 		var val = this.toDoList[position];
 		val.completed = !val.completed;
-		this.displayToDo();
 	},
 	toggleAll:function(){
 		var completedToDo = 0;
@@ -48,38 +30,36 @@ var todo = {
 				this.toDoList[i].completed = false;
 			}
 		}
-		this.displayToDo();
 	}
 
 };
 //create a handler object to hold all the button events!
-var e ={
+window.e ={
 	displayToDo:function(){
 		var todo_list = document.querySelector("ul");
+		var total_todo =document.querySelector('.info').querySelectorAll('span')[0];
 		todo_list.innerHTML ='';	
 		for(var i=0;i<todo.toDoList.length;i++){
 			var newToDo = document.createElement("li");
 			newToDo.className ="item";
-			newToDo.innerHTML=  "<div><input type='checkbox'/><span onclick = 'e.changeToDo("+ i +")'>" 
+			newToDo.innerHTML=  "<div><input type='checkbox' onclick='e.onComplete("+i+",this)'/><span onclick = 'e.changeToDo("+ i +")'>" 
 				+ todo.toDoList[i].toDoText + "</span><input id ='inputToDoText' type='text' onkeypress='e.changeMade("+i+",event)'></input>"
 				 +"<button onclick='e.deleteToDo("+i+")'>Delete</button></div>";
 			newToDo.id = i;
 
 			todo_list.appendChild(newToDo);
 		}
-	
+	total_todo.innerHTML = todo.toDoList.length + "To Dos";
 	},
 	addToDo:function(){
 		var todo_text = document.getElementById("addToDoText");
-		
 		if(todo_text.value){
 		todo.addToDo(todo_text.value);
-		
 		todo_text.value ="";
-	}else{
+		}else{
 		alert("Please add a To Do");
-	}
-	this.displayToDo();
+		}
+		this.displayToDo();
 	},
 	changeToDo:function(position){
 		//onblur='this.disabled =true'
@@ -95,10 +75,8 @@ var e ={
 		spanText.style.visibility = 'hidden';	
 		inputText.style.visibility ='visible';
 		inputText.focus();
-		//todo.disabled = false;
 		inputText.addEventListener('blur',function(){
 			spanText.innerHTML = inputText.value;
-			console.log(todo);
 			todo.toDoList[position].toDoText = inputText.value;
 		spanText.zIndex =2;
 		inputText.zIndex =1;
@@ -113,7 +91,6 @@ var e ={
 		var todoElem = document.getElementById(position.toString());
 		var spanText = todoElem.parentNode.querySelector('span');
 		var inputText = todoElem.parentNode.querySelector('#inputToDoText');
-			
 			if(event.key === "Enter"){
 			spanText.innerHTML = inputText.value;
 			//todoElem.toDoList[position].toDoText = inputText.value;
@@ -123,8 +100,6 @@ var e ={
 		inputText.disabled=true;
 		spanText.style.visibility = 'visible';	
 		inputText.style.visibility ='hidden';
-			console.log(inputText.onfocusout());
-
 		}
 
 	},
@@ -151,26 +126,44 @@ var e ={
 	},
 	deleteToDo:function(position){
 		var element = document.getElementById(position.toString());
-		element.parentNode.removeChild(element);
 		todo.deleteToDo(position);
+		element.parentNode.removeChild(element);
+		this.displayToDo();
 	},
 	toggleCompleted:function(){
-		var completedToDo = document.querySelectorAll("input[type='checkbox']");
+		var completedToDo = document.querySelectorAll("input[checked=true]");
 		var totalToDos = document.querySelectorAll("li");
+		var total_todo_completed =document.querySelector('.info').querySelectorAll('span')[2];
+console.log(todo.toDoList, "before Delete");
 		for(var i=0;i<completedToDo.length;i++){
-			if(completedToDo[i].checked){
+			//object position needs to be fixed on delete
 				todo.toDoList[i].completed = completedToDo[i].checked;
-				var element = document.getElementById(i.toString());
-			element.parentNode.removeChild(element);
-			todo.deleteToDo(i);
-			
+				todo.deleteToDo(completedToDo[i].parentNode.parentNode.id);
+			completedToDo[i].parentNode.parentNode.parentNode.removeChild(completedToDo[i].parentNode.parentNode);
 			}
-		}
+	
+	total_todo_completed.textContent ="0 completed";
+	console.log(todo.toDoList, "After Delete");
+			this.displayToDo();
+			//console.log(todo.toDoList, "After Delete");
 	},
 	addInputText:function(event){
-	if(event.keyCode === 13){
-		this.addToDo();
+		if(event.keyCode === 13){
+			this.addToDo();
+		}
+},
+onComplete:	function(position,ckd){
+	var total_todo =document.querySelector('.info').querySelectorAll('span')[2];
+	var counter =0;
+	console.log(todo.toDoList);
+	todo.toDoList[position].completed = ckd.checked;
+	ckd.setAttribute('checked',ckd.checked);
+	for(var i=0;i<todo.toDoList.length;i++){
+		if(todo.toDoList[i].completed){
+		counter +=1;
 	}
+	}
+	total_todo.innerHTML = counter + "completed";
 }
-}
-;
+};
+})(window);
