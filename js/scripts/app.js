@@ -1,13 +1,12 @@
 (function(MakeShift) {
-    /*
+        var data = []
+        var app = MakeShift.module("todo");
+        app.views('thelist', {
+                tags: ['text'],
+                data: data
+            }
 
-    */
-    var app = MakeShift.module("todo");
-    app.component('thelist', {
-        ctrl: function($scope) {
-            $scope.title = "title";
-        }
-    });
+        });
 
 
 })(MakeShift);

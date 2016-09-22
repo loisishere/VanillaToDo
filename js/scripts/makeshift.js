@@ -1,17 +1,20 @@
 (function(window) {
     'use strict';
     window.MakeShift = {
-
+        //views
         module: function(tag) {
             this.tag = document.querySelector(tag);
             var self = this;
             return {
-                component: function(name, obj) {
+                views: function(name, obj) {
                     var name = this.name = self.tag.querySelector(name),
                         obj = this.obj = obj;
 
-                    return name;
+                },
+                controll: function() {
+                    //a list of functions to be excuted, button presses etc
                 }
+
             }
         }
     }

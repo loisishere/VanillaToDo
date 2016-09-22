@@ -2,18 +2,24 @@
 <html>
 
 <head>
-    <title>VanillaJS To Dos App</title>
+    <title>VanillaJS To Do</title>
     <link rel="stylesheet" type="text/css" href="css/style.css" />
 </head>
 
 <body>
-    <todo>
-        <thelist>
-            {{title}}
-        </thelist>
-    </todo>
+    <div class="todoModule">
+        <input type="text" placeholder="add a to do">
+        <button id="addToDo">Add TODO</button>
+        <ul id="todoList">
+            <script type="text/template" id="template">
+                <li class="todo__item">
+                    <input type="checkbox" value="{{completed}}"><span>{{todoText}}</span><i class="del">Del</i>
+                </li>
+            </script>
+        </ul>
+    </div>
     <script type="text/javascript" src="js/scripts/makeshift.js"></script>
-    <script type="text/javascript" src="js/scripts/app.js"></script>
+    <script type="text/javascript" src="js/scripts/module.js"></script>
 </body>
 
 </html>
