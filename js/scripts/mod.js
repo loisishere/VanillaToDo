@@ -5,9 +5,9 @@ var todo = (function() {
     var inputs = elem.querySelector('input[type="text"]');
     var ul = elem.querySelector('ul');
     var template = document.querySelector('#template').innerHTML;
-    var self = this;
+    // var self = this;
 
-    function render() {
+    function _render() {
         var i = 0,
             len = todolist.length,
             data = todolist;
@@ -17,12 +17,7 @@ var todo = (function() {
                 .replace(/{{completed}}/g, data[i].completed)
                 .replace(/{{todoText}}/g, data[i].todoText)
         }
-        // del = ul.querySelectorAll('i.del');
-        // del.forEach(function(data) {
-        //     data.addEventListener('click', function() {
-        //         deleteToDo(this);
-        //     })
-        // })
+        pubsub.publish('activeTasks', todolist);
     };
 
 
@@ -33,22 +28,23 @@ var todo = (function() {
             return;
         } else {
             todolist.push({ completed: false, todoText: val });
-            render();
+            _render();
             inputs.value = '';
         }
     };
 
-    function deleteToDo(self) {
-        var i = Array.from(self.parentNode.parentNode.children).indexOf(self.parentNode);
-        todolist.splice(i, 1);
-        render();
+    function deleteToDo(idx) {
+        console.log(idx);
+        todolist.splice(idx, 1);
+        _render();
     }
 
     btn.addEventListener('click', addToDo);
     ul.addEventListener('click', function(e) {
-        deleteToDo(e.target.parentNode.querySelector('i.del'));
+        var i = Array.from(this.children).indexOf(e.target.parentNode);
+        deleteToDo(i);
     })
-    render();
+    _render();
 
     return {
         addToDo: addToDo,
