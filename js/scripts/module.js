@@ -1,62 +1,60 @@
-(function() {
+var todo = (function() {
     'use strict;'
-    var todo = {
-        todoList: [{ completed: false, todoText: 'Get list ordered' }, { completed: false, todoText: 'finish list' }],
-        init: function() {
-            this.cacheDom();
-            this.render();
-            this.bindEvents();
-        },
-        cacheDom: function() {
-            this.elem = document.querySelector('.todoModule');
-            this.btn = this.elem.querySelector('button');
-            this.inputs = this.elem.querySelector('input[type="text"]');
-            this.ul = this.elem.querySelector('ul');
-            this.template = document.querySelector('#template').innerHTML;
-        },
-        render: function() {
-            var i = 0,
-                len = this.todoList.length,
-                data = this.todoList;
-            this.ul.innerHTML = '';
-            for (; i < len; i++) {
-                this.ul.innerHTML += this.template
-                    .replace(/{{completed}}/g, data[i].completed)
-                    .replace(/{{todoText}}/g, data[i].todoText)
-            }
-            //end of render function
-        },
-        bindEvents: function() {
-            this.btn.addEventListener('click', this.addToDo.bind(this));
-            var self = this,
-                li = '';
-            del = Array.from(this.ul.querySelectorAll('i.del'));
-            del.forEach(function(data) {
-                li = this;
-
-                data.addEventListener('click', function() {
-                    self.deleteToDo(this)
-                });
-            });
-        },
-        addToDo: function() {
-            // var self = this;
-            if (this.inputs.value === "") {
-                return;
-            } else {
-                this.todoList.push({ completed: false, todoText: this.inputs.value });
-                this.render();
-                this.inputs.value = '';
-            }
-        },
-        deleteToDo: function(self) {
-            var i = Array.from(self.parentNode.parentNode.children).indexOf(self.parentNode);
-            this.todoList.splice(i, 1);
-            //.indexOf(self);
-            this.render();
+    var todolist = [{ completed: true, todoText: 'Get list ordered' }, { completed: false, todoText: 'finish list' }];
+    var elem = document.querySelector('.todoModule');
+    var btn = elem.querySelector('button');
+    var inputs = elem.querySelector('input[type="text"]');
+    var ul = elem.querySelector('ul');
+    var template = document.querySelector('#template').innerHTML;
+    // var self = this;
+    btn.addEventListener('click', addToDo);
+    ul.addEventListener('click', function(e) {
+        if (e.target.nodeName === 'I') {
+            var i = Array.from(this.children).indexOf(e.target.parentNode);
+            deleteToDo(i);
         }
+    })
+    _render();
 
+    function _render() {
+        var i = 0,
+            len = todolist.length,
+            data = todolist;
+        ul.innerHTML = '';
+        for (; i < len; i++) {
+            ul.innerHTML += template
+                .replace(/{{completed}}/g, data[i].completed)
+                .replace(/{{todoText}}/g, data[i].todoText)
+        }
+        events.emit('activeTasks', todolist.length);
     };
 
-    todo.init();
+    function addToDo(val) {
+        val = (typeof val === 'string') ? val : inputs.value;
+        console.log(val);
+        if (val === "") {
+            return;
+        } else {
+            todolist.push({ completed: false, todoText: val });
+            _render();
+            inputs.value = '';
+        }
+    };
+
+    function deleteToDo(idx) {
+        todolist.splice(idx, 1);
+        _render();
+    }
+
+    function toggleAllCompleted() {
+        var taskCompleted = todolist.filter(function(a) { return a["completed"] === true ? a : "" }).length;
+        var totalTasks = todolist.length;
+
+    }
+    toggleAllCompleted();
+    return {
+        addToDo: addToDo,
+        deleteToDo: deleteToDo
+
+    };
 })();
