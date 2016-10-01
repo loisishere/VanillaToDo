@@ -1,64 +1,89 @@
-html, body{
-	margin: 0 auto;
-	background-color: rosybrown;
+html,
+body {
+    margin: 0 auto;
+    background-color: rosybrown;
 }
-ul{
-	list-style:none;
-	position: relative;
-	height: auto;
+
+ul {
+    list-style: none;
+    position: relative;
+    height: auto;
     width: 25%;
     margin: 0 auto;
+}
 
+li>div>span {
+    text-align: left;
+    position: absolute;
+    width: auto;
+    height: auto;
+    z-index: 2;
+    float: left;
+    display: inline;
+    background-color: white;
 }
-li > div > span{
-	text-align: left;
-	position:absolute;
-	width:auto;
-	height: auto;
-	z-index: 2;
-	float:left;
-	display: inline;
-	background-color: white;
+
+li>div>input[type='text'] {
+    z-index: 1;
+    border: none;
+    float: left;
+    border-bottom: black 1px solid;
+    position: absolute;
+    background-color: white;
+    width: auto;
+    display: inline;
+    visibility: hidden;
 }
-li > div > input[type='text']{
-	z-index: 1;
-	border: none;
-	float: left;
-	border-bottom: black 1px solid;
-	position: absolute;
-	background-color: white;
-	width: auto;
-	display: inline;
-	visibility: hidden;
+
+li>div>input[type='text']:focus {
+    border: none;
 }
-li > div > input[type='text']:focus{
-	border: none;
+
+li>div>button {
+    float: right;
 }
-li > div > button{
-	float:right;
+
+.info {
+    display: none;
 }
-.info{
-	display: none;
+
+#addToDoText {
+    width: 90%;
+    padding: 0px;
+    margin: 0px;
+    height: 50px;
+    border: none;
+    border-bottom: 1px saddlebrown solid;
 }
-#addToDoText{
-	width:90%;
-	padding: 0px;
-	margin: 0px;
-	height: 50px;
-	border:none;
-	border-bottom: 1px saddlebrown solid;
+
+.container {
+    width: 100%;
+    text-align: center;
 }
-.container{
-	width:100%;
-	text-align: center;
+
+.container>div>button {
+    margin: 0 5%;
+    width: 150px;
+    height: 30px;
+    display: inline-block;
+    border: none;
+    border-radius: 10px;
+    color: mintcream;
+    background-color: chocolate;
 }
-.container > div > button{
-	margin: 0 5%;
-	width:150px;
-	height:30px;
-	display: inline-block;
-	border:none;
-	border-radius: 10px;
-	color:mintcream;
-	background-color: chocolate;
+
+.todo--completed {
+    width: 15px;
+    height: 15px;
+    background-color: green;
+}
+
+.todo--uncompleted {
+    width: 15px;
+    height: 15px;
+    background-color: white;
+}
+
+.hidden {
+    display: none;
 }

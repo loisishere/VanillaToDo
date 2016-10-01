@@ -1,19 +1,37 @@
 var todo = (function() {
     'use strict;'
-    var todolist = [{ completed: true, todoText: 'Get list ordered' }, { completed: false, todoText: 'finish list' }];
+    var todolist = [];
     var elem = document.querySelector('.todoModule');
-    var btn = elem.querySelector('button');
+    var addBtn = elem.querySelector('#addToDo');
+    var toggleBtn = elem.querySelector('#completeAll');
+    var deleteCompleteBtn = elem.querySelector('#deleteCompleted');
     var inputs = elem.querySelector('input[type="text"]');
     var ul = elem.querySelector('ul');
-    var template = document.querySelector('#template').innerHTML;
-    // var self = this;
-    btn.addEventListener('click', addToDo);
+    var template = document.querySelector('#todoTemplate').innerHTML;
+    addBtn.addEventListener('click', addToDo);
     ul.addEventListener('click', function(e) {
-        if (e.target.nodeName === 'I') {
+        if (e.target.className === 'del') {
             var i = Array.from(this.children).indexOf(e.target.parentNode);
             deleteToDo(i);
         }
-    })
+        if (e.target.id === "toggle") {
+            var i = Array.from(this.children).indexOf(e.target.parentNode);
+            toggleTaskComplete(i);
+        }
+        if (e.target.nodeName === "INPUT") {
+            var i = Array.from(this.children).indexOf(e.target.parentNode);
+            if (e.target.disabled) {
+                e.target.disabled = false;
+                console.log(e.target.onchange);
+            } else {
+                e.target.onblur = changeToDo(i, e.target.value);
+
+            };
+            //toggleTaskComplete(i);
+        }
+    });
+    toggleBtn.addEventListener('click', toggleAllCompleted);
+    deleteCompleteBtn.addEventListener('click', deleteCompleted);
     _render();
 
     function _render() {
@@ -24,7 +42,8 @@ var todo = (function() {
         for (; i < len; i++) {
             ul.innerHTML += template
                 .replace(/{{completed}}/g, data[i].completed)
-                .replace(/{{todoText}}/g, data[i].todoText)
+                .replace(/{{id}}/g, i)
+                .replace(/{{todoText}}/g, data[i].todoText);
         }
         events.emit('activeTasks', todolist.length);
     };
@@ -35,7 +54,7 @@ var todo = (function() {
         if (val === "") {
             return;
         } else {
-            todolist.push({ completed: false, todoText: val });
+            todolist.push({ completed: "todo--uncompleted", todoText: val });
             _render();
             inputs.value = '';
         }
@@ -47,14 +66,39 @@ var todo = (function() {
     }
 
     function toggleAllCompleted() {
-        var taskCompleted = todolist.filter(function(a) { return a["completed"] === true ? a : "" }).length;
+        var taskCompleted = todolist.filter(function(a) { return a["completed"] === "todo--completed" ? a : "" }).length;
         var totalTasks = todolist.length;
+        console.log(taskCompleted, totalTasks);
+        if (taskCompleted < totalTasks) {
+            for (var i = 0; i < totalTasks; i++) {
+                todolist[i].completed = "todo--completed";
+            }
+        }
+        if (taskCompleted === totalTasks) {
+            for (var i = 0; i < totalTasks; i++) {
+                todolist[i].completed = "todo--uncompleted";
+            }
 
+        }
+        _render();
     }
-    toggleAllCompleted();
-    return {
-        addToDo: addToDo,
-        deleteToDo: deleteToDo
 
-    };
+    function changeToDo(idx, txt) {
+        todolist[idx].todoText = txt;
+        _render();
+    }
+
+    function toggleTaskComplete(idx) {
+        if (todolist[idx].completed === "todo--uncompleted") {
+            todolist[idx].completed = "todo--completed";
+        } else {
+            todolist[idx].completed = "todo--uncompleted";
+        }
+        _render();
+    }
+
+    function deleteCompleted() {
+        todolist = todolist.filter(function(a) { return a["completed"] === "todo--uncompleted" ? a : "" });
+        _render();
+    }
 })();

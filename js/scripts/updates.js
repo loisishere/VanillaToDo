@@ -1,16 +1,19 @@
 var todostats = (function() {
-    var activeElem = document.querySelector('.active');
+    var activeText = document.querySelector('.active');
     var active = 0;
+    var activeElem = document.querySelector('.display__active');
     events.on('activeTasks', setActive);
+
     render();
 
     function render() {
-        activeElem.textContent = active;
+        activeText.textContent = active;
     }
 
     function setActive(set) {
         active = set;
         render();
     }
+
 
 })();
