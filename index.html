@@ -1,24 +1,30 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>VanillaJS To Dos App</title>
-	<link rel="stylesheet" type="text/css" href="css/style.css"/>
-</head>
-<body>
-	<div class="container">
-<input type="text" id="addToDoText" placeholder="Type your to do" onkeypress="e.addInputText(event)"/>
-<div>
-<button onclick="e.addToDo()">Add</button>
-<button onclick="e.toggleAll()">All Completed</button>
-<button onclick="e.toggleCompleted()">Delete Completed</button>
-</div>
 
-	
-</div>
-<ul class="todos">
-<li></li>
-</ul>
-<div class="info"><span>0 To Dos</span><span>Buttons</span><span>Completed</span></div>
-<script type="text/javascript" src="js/script.js"></script>
+<head>
+    <title>VanillaJS To Do</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+</head>
+
+<body>
+    <div class="todoModule">
+        <input type="text" placeholder="add a to do">
+        <button id="addToDo">Add TODO</button>
+        <button id="completeAll">Toggle All complete</button>
+        <button id="deleteCompleted">Delete Completed</button>
+        <ul id="todoList">
+            <script type="text/template" id="todoTemplate">
+                <li class="todo__item" id="{{id}}">
+                    <i id='toggle' class="{{completed}}">O</i><input type="text" value="{{todoText}}" disabled='true'></input><i class="del">Del</i>
+                </li>
+            </script>
+        </ul>
+
+        <p class='active'>loading</p><button class="display__active">Active</button>
+    </div>
+    <script type="text/javascript" src="js/scripts/events.js"></script>
+    <script type="text/javascript" src="js/scripts/module.js"></script>
+    <script type="text/javascript" src="js/scripts/updates.js"></script>
 </body>
+
 </html>
